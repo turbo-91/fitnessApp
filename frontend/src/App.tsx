@@ -7,7 +7,7 @@ function App() {
 
     const fetchData = () => {
         axios
-            .get<[]>("http://localhost:8080/api/hello") // Ensure the response matches the type
+            .get<[]>("http://localhost:8080/api/workouts") // Ensure the response matches the type
             .then((response) => {
                 setData(response.data); // Save the fetched data
             })
@@ -20,10 +20,12 @@ function App() {
         fetchData();
     }, []);
 
+    console.log("workouts in App", data)
+
 
     return (
     <>
-        <p>{data}</p>
+        <p></p>
     </>
   )
 }
