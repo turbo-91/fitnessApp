@@ -4,6 +4,8 @@ import axios from 'axios'
 import WorkoutCard from "./components/Card/WorkoutCard.tsx";
 import {Workout} from "./types/Workout.ts";
 import {Route, Routes} from "react-router-dom";
+import Header from "./components/Header/Header.tsx";
+import Footer from "./components/Footer/Footer.tsx";
 
 function App() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
@@ -27,14 +29,19 @@ function App() {
 
 
     return (
-        <Routes>
-        <Route path="/history" element={<>
-            {workouts.map((workout) => (
-                <WorkoutCard key={workout.id} workout={workout}/>
-            ))}
-        </>}/>
+        <>
+            <Header/>
+            <Routes>
+                <Route path="/home" />
+                <Route path="/history" element={<>
+                    {workouts.map((workout) => (
+                        <WorkoutCard key={workout.id} workout={workout}/>
+                    ))}
+                </>}/>
 
-        </Routes>
+            </Routes>
+            <Footer/>
+        </>
     )
 }
 
