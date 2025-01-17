@@ -21,7 +21,4 @@ public class WorkoutController {
     public List<Workout> getAll() {
         return workoutService.getAllWorkouts();
     }
-
-
-
 }

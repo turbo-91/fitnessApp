@@ -18,5 +18,4 @@ public class WorkoutService {
     public List<Workout> getAllWorkouts() {
         return workoutRepo.findAll();
     }
-
 }
