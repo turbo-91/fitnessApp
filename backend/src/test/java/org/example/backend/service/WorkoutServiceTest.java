@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class WorkoutServiceTest {
 
-private final WorkoutRepo workoutRepo= mock(WorkoutRepo.class);
+private final WorkoutRepo repo= mock(WorkoutRepo.class);
 private final IdService idService= mock(IdService.class);
 
     @Test
@@ -42,10 +42,10 @@ private final IdService idService= mock(IdService.class);
                 1705400659
         );;
 
-        WorkoutService workoutService = new WorkoutService(workoutRepo, idService);
+        WorkoutService workoutService = new WorkoutService(repo, idService);
         List<Workout> workoutList = List.of(workout1, workout2);
 
-        when(workoutRepo.findAll()).thenReturn(workoutList); // Mock the repository to return the list
+        when(repo.findAll()).thenReturn(workoutList); // Mock the repository to return the list
 
         List<Workout> expected = workoutList;
 
@@ -54,6 +54,6 @@ private final IdService idService= mock(IdService.class);
 
         //THEN
         assertEquals(expected, actual); // Verify the list matches
-        verify(workoutRepo).findAll(); // Verify findAll was called once
+        verify(repo).findAll(); // Verify findAll was called once
 
 }}
