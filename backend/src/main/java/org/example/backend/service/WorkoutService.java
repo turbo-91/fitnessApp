@@ -10,9 +10,11 @@ import java.util.List;
 public class WorkoutService {
 
     private final WorkoutRepo workoutRepo;
+    private final IdService idService;
 
-    public WorkoutService(WorkoutRepo workoutRepo) {
+    public WorkoutService(WorkoutRepo workoutRepo, IdService idService) {
         this.workoutRepo = workoutRepo;
+        this.idService = idService;
     }
 
     public List<Workout> getAllWorkouts() {
