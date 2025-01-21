@@ -1,5 +1,13 @@
 #Allgemein
 .idea
+.DS_Store
+backend/src/main/.DS_Store
+backend/src/main/java/.DS_Store
+backend/src/main/java/org/.DS_Store
+backend/src/main/java/org/example/.DS_Store
+backend/src/main/java/org/example/backend/.DS_Store
+backend/.DS_Store
+backend/src/.DS_Store
 
 
 #Backend
