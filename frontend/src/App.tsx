@@ -32,7 +32,7 @@ function App() {
         <>
             <Header/>
             <Routes>
-                <Route path="/home" />
+                <Route path="/home"/>
                 <Route path="/history" element={<>
                     {workouts.map((workout) => (
                         <WorkoutCard key={workout.id} workout={workout}/>
