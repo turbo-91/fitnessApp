@@ -64,7 +64,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>fitnessApp</finalName>
+		<finalName>fitnessapp</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
