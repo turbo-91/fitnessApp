@@ -33,9 +33,3 @@ export const Select = styled.select`
     font-size: 0.9rem;
   }
 `;
-
-export const Option = styled.option`
-  color: black;
-  background: white;
-  font-size: 1rem;
-`;
