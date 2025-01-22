@@ -1,12 +1,6 @@
-import { DropdownContainer, Select, Option } from "./Dropdown.styles";
+import { DropdownContainer, Select} from "./Dropdown.styles";
 
-type DropdownProps = {
-    options: string[];
-    onChange: (value: string) => void;
-    placeholder?: string;
-};
-
-function Dropdown(props: Readonly<DropdownProps>) {
+function Dropdown() {
 
     return (
         <DropdownContainer>

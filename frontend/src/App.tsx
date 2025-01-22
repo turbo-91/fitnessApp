@@ -6,12 +6,11 @@ import {Workout} from "./types/Workout.ts";
 import {Route, Routes} from "react-router-dom";
 import Header from "./components/Header/Header.tsx";
 import Footer from "./components/Footer/Footer.tsx";
-import {Select} from "./components/Dropdown/Dropdown.styles.ts";
-import OptionElement from "./components/Option.tsx";
+import LetsWorkout from "./features/LetsWorkout/LetsWorkout.tsx";
 
 function App() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
-    const [newestWorkouts, setNewestWorkouts] = useState<Workout[]>([]);
+  const [newestWorkouts, setNewestWorkouts] = useState<Workout[]>([]);
 
     const fetchWorkouts = () => {
         axios
@@ -40,16 +39,7 @@ function App() {
             <Header/>
             <Routes>
                 <Route path="/home"/>
-                <Route path="/letsworkout" element={<>
-                    <Select>
-                        <option value="" disabled selected>
-                            Where do you want to pick up today?
-                        </option>
-                        {newestWorkouts.map((workout) => (
-                            <OptionElement workout={workout} />
-                        ))}
-                    </Select>
-                </>}/>
+                <Route path="/letsworkout" element={<LetsWorkout newestWorkouts={newestWorkouts}/>}/>
                 <Route path="/history" element={<>
                     {workouts.map((workout) => (
                         <WorkoutCard key={workout.id} workout={workout}/>
