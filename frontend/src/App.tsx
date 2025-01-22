@@ -7,6 +7,7 @@ import {Route, Routes} from "react-router-dom";
 import Header from "./components/Header/Header.tsx";
 import Footer from "./components/Footer/Footer.tsx";
 import LetsWorkout from "./features/LetsWorkout/LetsWorkout.tsx";
+import {AppContainer} from "./App.styles.ts";
 
 function App() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
@@ -35,20 +36,29 @@ function App() {
 
 
     return (
-        <>
-            <Header/>
-            <Routes>
-                <Route path="/home"/>
-                <Route path="/letsworkout" element={<LetsWorkout newestWorkouts={newestWorkouts}/>}/>
-                <Route path="/history" element={<>
-                    {workouts.map((workout) => (
-                        <WorkoutCard key={workout.id} workout={workout}/>
-                    ))}
-                </>}/>
-
-            </Routes>
-            <Footer/>
-        </>
+        <AppContainer>
+            <Header />
+            <main>
+                <Routes>
+                    <Route path="/home" />
+                    <Route
+                        path="/letsworkout"
+                        element={<LetsWorkout newestWorkouts={newestWorkouts} />}
+                    />
+                    <Route
+                        path="/history"
+                        element={
+                            <>
+                                {workouts.map((workout) => (
+                                    <WorkoutCard key={workout.id} workout={workout} />
+                                ))}
+                            </>
+                        }
+                    />
+                </Routes>
+            </main>
+            <Footer />
+        </AppContainer>
     )
 }
 
