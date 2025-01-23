@@ -1,5 +1,5 @@
 import {Workout} from "../../types/Workout.ts";
-import {CardContainer, ValueContainer, ValueContainerWrapper} from "./WorkoutCardMini.styles.ts";
+import {CardContainer} from "./WorkoutCardMini.styles.ts";
 
 export interface CardProps {
 workout: Workout;

@@ -1,22 +1,19 @@
-import {DropdownContainer} from "../../components/Dropdown/Dropdown.styles.ts";
 import {Workout} from "../../types/Workout.ts";
-import {ChangeEvent, useState} from "react";
-import { useNavigate } from "react-router-dom";
-import Button from "../../components/Button/Button.tsx";
-import WorkoutCardForm from "../../components/Form/WorkoutCardForm.tsx";
-import WorkoutCard from "../../components/Card/WorkoutCard.tsx";
+import WorkoutCardMini from "../../components/CardMini/WorkoutCardMini.tsx";
 
 
 type HistoryProps = {
-
+    workouts : Workout[]
 };
 
 function History(props: HistoryProps) {
-
-
+    const { workouts } = props;
     return (
-       <DropdownContainer>
-        </DropdownContainer>
+        <>
+            {workouts.map((workout) => (
+                <WorkoutCardMini key={workout.id} workout={workout}/>
+            ))}
+        </>
     );
 }
 

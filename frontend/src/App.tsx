@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import axios from 'axios'
-import WorkoutCard from "./components/Card/WorkoutCard.tsx";
 import {Workout} from "./types/Workout.ts";
 import {Route, Routes} from "react-router-dom";
 import Header from "./components/Header/Header.tsx";
 import Footer from "./components/Footer/Footer.tsx";
 import LetsWorkout from "./features/LetsWorkout/LetsWorkout.tsx";
 import {AppContainer} from "./App.styles.ts";
+import History from "./features/History/History.tsx";
 
 
 function App() {
@@ -61,11 +61,7 @@ function App() {
                     <Route
                         path="/history"
                         element={
-                            <>
-                                {workouts.map((workout) => (
-                                    <WorkoutCard key={workout.id} workout={workout} />
-                                ))}
-                            </>
+                            <History workouts={workouts}/>
                         }
                     />
                 </Routes>
