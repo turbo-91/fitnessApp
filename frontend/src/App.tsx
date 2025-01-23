@@ -13,6 +13,7 @@ import {AppContainer} from "./App.styles.ts";
 function App() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [newestWorkouts, setNewestWorkouts] = useState<Workout[]>([]);
+  const [finishedWorkout, setFinishedWorkout] = useState<Workout | null>(null);
 
 
     const fetchWorkouts = () => {
@@ -31,6 +32,17 @@ function App() {
             });
     };
 
+    const addWorkout = (workout: Workout) => {
+        axios
+            .post<Workout>("http://localhost:8080/api/todo", workout)
+            .then((response) => {
+                setWorkouts((prevWorkouts) => [...prevWorkouts, response.data]); // Append the new workout to the workouts state
+            })
+            .catch((error) => {
+                console.error("Error adding new workout:", error);
+            });
+    };
+
     useEffect(() => {
         fetchWorkouts();
     }, []);
@@ -45,7 +57,7 @@ function App() {
                     <Route path="/home" />
                     <Route
                         path="/letsworkout"
-                        element={<LetsWorkout newestWorkouts={newestWorkouts} />}
+                        element={<LetsWorkout newestWorkouts={newestWorkouts} finishedWorkout={finishedWorkout} setFinishedWorkout={setFinishedWorkout} addWorkout={addWorkout}/>}
                     />
                     <Route
                         path="/history"
