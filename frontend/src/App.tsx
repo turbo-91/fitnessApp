@@ -14,6 +14,7 @@ function App() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [newestWorkouts, setNewestWorkouts] = useState<Workout[]>([]);
   const [finishedWorkout, setFinishedWorkout] = useState<Workout | null>(null);
+  const [todaysWorkout, setTodaysWorkout] = useState<Workout | null>(null);
 
 
     const fetchWorkouts = () => {
@@ -47,6 +48,33 @@ function App() {
         fetchWorkouts();
     }, []);
 
+    const updateWorkout = (updatedWorkout: Workout) => {
+        const workoutToUpdate = workouts.find((workout: Workout) => workout.id === updatedWorkout.id);
+        if (!workoutToUpdate) return;
+
+        axios
+            .put<Workout>(`http://localhost:8080/api/workouts/${workoutToUpdate.id}`, updatedWorkout)
+            .then((response) => {
+                setWorkouts((prevWorkouts) =>
+                    prevWorkouts.map((workout: Workout) => (workout.id === workoutToUpdate.id ? response.data : workout))
+                );
+            })
+            .catch((error) => {
+                console.error("Error updating workout:", error);
+            });
+    };
+
+    // const deleteTodo = (id: string) => {
+    //     axios
+    //         .delete(`http://localhost:8080/api/todo/${id}`)
+    //         .then(() => {
+    //             setData((prevData) => prevData.filter((todo) => todo.id !== id)); // Remove the todo from state
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error deleting todo:", error);
+    //         });
+    // };
+
 
 
     return (
@@ -56,12 +84,12 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={<LetsWorkout newestWorkouts={newestWorkouts} finishedWorkout={finishedWorkout} setFinishedWorkout={setFinishedWorkout} addWorkout={addWorkout}/>}
+                        element={<LetsWorkout setTodaysWorkout={setTodaysWorkout} todaysWorkout={todaysWorkout} newestWorkouts={newestWorkouts} finishedWorkout={finishedWorkout} setFinishedWorkout={setFinishedWorkout} addWorkout={addWorkout}/>}
                     />
                     <Route
                         path="/history"
                         element={
-                            <History workouts={workouts}/>
+                            <History workouts={workouts} updateWorkout={updateWorkout} setTodaysWorkout={setTodaysWorkout} todaysWorkout={todaysWorkout}/>
                         }
                     />
                 </Routes>

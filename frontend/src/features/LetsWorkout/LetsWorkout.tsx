@@ -12,12 +12,13 @@ type LetsWorkoutProps = {
     finishedWorkout: Workout | null;
     setFinishedWorkout: (workout: Workout | null) => void;
     addWorkout: (workout: Workout) => void;
+    todaysWorkout: Workout | null;
+    setTodaysWorkout: (workout: Workout | null) => void;
 };
 
 function LetsWorkout(props: LetsWorkoutProps) {
-    const { newestWorkouts, finishedWorkout, setFinishedWorkout, addWorkout } = props;
+    const { newestWorkouts, finishedWorkout, setFinishedWorkout, addWorkout, todaysWorkout, setTodaysWorkout } = props;
     const [selectedWorkoutId, setSelectedWorkoutId] = useState<string>("");
-    const [todaysWorkout, setTodaysWorkout] = useState<Workout | null>(null);
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
 

@@ -3,15 +3,19 @@ import WorkoutCardMini from "../../components/CardMini/WorkoutCardMini.tsx";
 
 
 type HistoryProps = {
-    workouts : Workout[]
+    workouts: Workout[],
+    updateWorkout: (updatedWorkout: Workout) => void;
+    todaysWorkout: Workout | null;
+    setTodaysWorkout: (workout: Workout | null) => void;
 };
 
 function History(props: HistoryProps) {
-    const { workouts } = props;
+    const {workouts, updateWorkout, todaysWorkout, setTodaysWorkout} = props;
+
     return (
         <>
             {workouts.map((workout) => (
-                <WorkoutCardMini key={workout.id} workout={workout}/>
+                <WorkoutCardMini key={workout.id} workout={workout} updateWorkout={updateWorkout} setTodaysWorkout={setTodaysWorkout} todaysWorkout={todaysWorkout}/>
             ))}
         </>
     );
