@@ -8,10 +8,12 @@ import Header from "./components/Header/Header.tsx";
 import Footer from "./components/Footer/Footer.tsx";
 import LetsWorkout from "./features/LetsWorkout/LetsWorkout.tsx";
 import {AppContainer} from "./App.styles.ts";
+import WorkoutCardForm from "./components/Form/WorkoutCardForm.tsx";
 
 function App() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [newestWorkouts, setNewestWorkouts] = useState<Workout[]>([]);
+
 
     const fetchWorkouts = () => {
         axios
@@ -41,6 +43,16 @@ function App() {
             <main>
                 <Routes>
                     <Route path="/home" />
+                    <Route
+                        path="/form"
+                        element={
+                            <>
+                                {workouts.map((workout) => (
+                                    <WorkoutCardForm key={workout.id} workout={workout} />
+                                ))}
+                            </>
+                        }
+                    />
                     <Route
                         path="/letsworkout"
                         element={<LetsWorkout newestWorkouts={newestWorkouts} />}
