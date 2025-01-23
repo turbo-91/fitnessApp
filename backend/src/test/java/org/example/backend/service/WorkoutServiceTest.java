@@ -55,5 +55,34 @@ private final IdService idService= mock(IdService.class);
         //THEN
         assertEquals(expected, actual); // Verify the list matches
         verify(repo).findAll(); // Verify findAll was called once
+}
+    @Test
+    void saveWorkout_shouldAddWorkout_whenCalledWithWorkout() {
+        // GIVEN
+        String generatedId = "newId123"; // Mocked ID
+        Workout inputWorkout = new Workout(
+                null, // ID is null because the service generates it
+                "Full Body Strength",
+                List.of(
+                        new Exercise("exercise1", "Squat", 60, List.of(10, 8, 6), "Focus on depth and control."),
+                        new Exercise("exercise2", "Bench Press", 40, List.of(10, 8, 6), "Ensure proper grip and avoid locking elbows."),
+                        new Exercise("exercise3", "Deadlift", 80, List.of(8, 6, 4), "Maintain a straight back throughout the lift.")
+                ),
+                1705400659
+        );
+        Workout expectedWorkout = inputWorkout.withId(generatedId);
 
-}}
+        when(idService.generateId()).thenReturn(generatedId);
+        when(repo.save(expectedWorkout)).thenReturn(expectedWorkout);
+
+        WorkoutService workoutService = new WorkoutService(repo, idService);
+
+        // WHEN
+        Workout actual = workoutService.saveWorkout(inputWorkout);
+
+        // THEN
+        assertEquals(expectedWorkout, actual);
+        verify(idService).generateId();
+        verify(repo).save(expectedWorkout);
+    }
+}

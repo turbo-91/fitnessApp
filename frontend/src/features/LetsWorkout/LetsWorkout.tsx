@@ -9,13 +9,15 @@ import WorkoutCard from "../../components/Card/WorkoutCard.tsx";
 
 type LetsWorkoutProps = {
     newestWorkouts: Workout[];
+    finishedWorkout: Workout | null;
+    setFinishedWorkout: (workout: Workout | null) => void;
+    addWorkout: (workout: Workout) => void;
 };
 
 function LetsWorkout(props: LetsWorkoutProps) {
-    const { newestWorkouts } = props;
+    const { newestWorkouts, finishedWorkout, setFinishedWorkout, addWorkout } = props;
     const [selectedWorkoutId, setSelectedWorkoutId] = useState<string>("");
     const [todaysWorkout, setTodaysWorkout] = useState<Workout | null>(null);
-    const [finishedWorkout, setFinishedWorkout] = useState<Workout | null>(null);
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
 
@@ -39,9 +41,10 @@ function LetsWorkout(props: LetsWorkoutProps) {
         if (!todaysWorkout) return;
 
         // Store the finished workout in a separate state
-        setFinishedWorkout(todaysWorkout);
-        // TODO: Replace with API call
+        // setFinishedWorkout(todaysWorkout);
+        addWorkout(todaysWorkout)
         console.log("Workout sent to backend:", todaysWorkout);
+        setFinishedWorkout(todaysWorkout)
 
         // Reset today's workout and the selection
         setTodaysWorkout(null);
@@ -51,7 +54,7 @@ function LetsWorkout(props: LetsWorkoutProps) {
     const navigate = useNavigate();
 
     const handleBackToHome = () => {
-        navigate("/home"); // Navigate to the home route
+        navigate("/"); // Navigate to the home route
     };
 
     const selectedWorkout = newestWorkouts.find((w) => w.id === selectedWorkoutId) || null;

@@ -20,4 +20,12 @@ public class WorkoutService {
     public List<Workout> getAllWorkouts() {
         return workoutRepo.findAll();
     }
+
+    public Workout saveWorkout(Workout workout) {
+        String newId = idService.generateId();
+        Workout workoutToSave = workout.withId(newId);
+
+        return workoutRepo.save(workoutToSave);
+    }
+
 }
