@@ -1,5 +1,6 @@
 package org.example.backend.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.backend.model.Exercise;
 import org.example.backend.model.Workout;
 import org.example.backend.repo.WorkoutRepo;
@@ -7,15 +8,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -27,6 +28,9 @@ class WorkoutControllerTest {
 
     @Autowired
     private WorkoutRepo repo;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Test
     void getAllWorkouts_shouldReturnListWithOneWorkout_whenCalledWithFilledDB() throws Exception {
@@ -90,5 +94,48 @@ class WorkoutControllerTest {
                                         """));
     }
 
+    @Test
+    void createWorkout_shouldPersistWorkoutAndReturnCreatedWorkout_whenCalledWithValidPayload() throws Exception {
+        String requestBody = """
+                {
+                    "name": "Cardio and Core",
+                    "exercises": [
+                        {
+                            "id": "exercise4",
+                            "name": "Running",
+                            "kg": 0,
+                            "set": [],
+                            "notes": "Maintain a steady pace."
+                        },
+                        {
+                            "id": "exercise5",
+                            "name": "Plank",
+                            "kg": 0,
+                            "set": [60, 60, 60],
+                            "notes": "Engage the core and keep the back straight."
+                        }
+                    ],
+                    "timestamp": 1705400700
+                }
+                """;
 
+        mockMvc.perform(post("/api/workouts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Cardio and Core"))
+                .andExpect(jsonPath("$.exercises").isArray())
+                .andExpect(jsonPath("$.exercises[0].id").value("exercise4"))
+                .andExpect(jsonPath("$.exercises[1].id").value("exercise5"))
+                .andExpect(jsonPath("$.timestamp").value(1705400700));
+
+        // Verify that the workout is saved in the database
+        assertThat(repo.findAll()).hasSize(1);
+        Workout savedWorkout = repo.findAll().get(0);
+        assertThat(savedWorkout.name()).isEqualTo("Cardio and Core");
+        assertThat(savedWorkout.exercises()).hasSize(2);
+    }
 }
+
+
+

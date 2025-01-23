@@ -19,4 +19,5 @@ public record Workout(
     public Workout withId(String id) {
         return new Workout(id, name, exercises, timestamp);
     }
+
 }
