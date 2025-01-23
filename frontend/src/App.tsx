@@ -34,7 +34,7 @@ function App() {
 
     const addWorkout = (workout: Workout) => {
         axios
-            .post<Workout>("http://localhost:8080/api/todo", workout)
+            .post<Workout>("http://localhost:8080/api/workouts", workout)
             .then((response) => {
                 setWorkouts((prevWorkouts) => [...prevWorkouts, response.data]); // Append the new workout to the workouts state
             })
@@ -54,9 +54,8 @@ function App() {
             <Header />
             <main>
                 <Routes>
-                    <Route path="/home" />
                     <Route
-                        path="/letsworkout"
+                        path="/"
                         element={<LetsWorkout newestWorkouts={newestWorkouts} finishedWorkout={finishedWorkout} setFinishedWorkout={setFinishedWorkout} addWorkout={addWorkout}/>}
                     />
                     <Route

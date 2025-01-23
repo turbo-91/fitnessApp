@@ -44,6 +44,7 @@ function LetsWorkout(props: LetsWorkoutProps) {
         // setFinishedWorkout(todaysWorkout);
         addWorkout(todaysWorkout)
         console.log("Workout sent to backend:", todaysWorkout);
+        setFinishedWorkout(todaysWorkout)
 
         // Reset today's workout and the selection
         setTodaysWorkout(null);
@@ -53,7 +54,7 @@ function LetsWorkout(props: LetsWorkoutProps) {
     const navigate = useNavigate();
 
     const handleBackToHome = () => {
-        navigate("/home"); // Navigate to the home route
+        navigate("/"); // Navigate to the home route
     };
 
     const selectedWorkout = newestWorkouts.find((w) => w.id === selectedWorkoutId) || null;
