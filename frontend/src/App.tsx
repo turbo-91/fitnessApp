@@ -48,34 +48,23 @@ function App() {
         fetchWorkouts();
     }, []);
 
-    const updateWorkout = (updatedWorkout: Workout) => {
-        const workoutToUpdate = workouts.find((workout: Workout) => workout.id === updatedWorkout.id);
-        if (!workoutToUpdate) return;
-
+    const updateWorkout = (workout: Workout) => {
+        console.log("workout before update", workout);
         axios
-            .put<Workout>(`http://localhost:8080/api/workouts/${workoutToUpdate.id}`, updatedWorkout)
-            .then((response) => {
-                setWorkouts((prevWorkouts) =>
-                    prevWorkouts.map((workout: Workout) => (workout.id === workoutToUpdate.id ? response.data : workout))
+            .put(`http://localhost:8080/api/workouts/${workout.id}`, workout)
+            .then(response => {
+                const updatedWorkout = response.data;
+                console.log("Update successful:", updatedWorkout);
+
+                // Update the workouts state
+                setWorkouts(prevWorkouts =>
+                    prevWorkouts.map(w => (w.id === updatedWorkout.id ? updatedWorkout : w))
                 );
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error("Error updating workout:", error);
             });
     };
-
-    // const deleteTodo = (id: string) => {
-    //     axios
-    //         .delete(`http://localhost:8080/api/todo/${id}`)
-    //         .then(() => {
-    //             setData((prevData) => prevData.filter((todo) => todo.id !== id)); // Remove the todo from state
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error deleting todo:", error);
-    //         });
-    // };
-
-
 
     return (
         <AppContainer>

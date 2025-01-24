@@ -29,4 +29,12 @@ public class WorkoutController {
         return workoutService.saveWorkout(workout);
     }
 
+    @PutMapping(path = {"{id}/update", "{id}"})
+    Workout update(@PathVariable String id, @RequestBody Workout workout) {
+        if (!workout.id().equals(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The id in the url does not match the request body's id");
+        }
+        return workoutService.updateWorkout(workout);
+    }
+
 }

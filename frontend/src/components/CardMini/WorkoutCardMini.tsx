@@ -8,12 +8,12 @@ import WorkoutCardForm from "../Form/WorkoutCardForm.tsx";
 export interface CardProps {
     workout: Workout;
     updateWorkout: (updatedWorkout: Workout) => void
-    todaysWorkout: Workout | null;
+    todaysWorkout: Workout;
     setTodaysWorkout: (workout: Workout | null) => void;
 }
 
 function WorkoutCardMini(props: Readonly<CardProps>) {
-    const { workout, setTodaysWorkout } = props;
+    const { workout, setTodaysWorkout, todaysWorkout, updateWorkout } = props;
     const [details, setDetails] = useState<boolean>(false)
     const [isEditing, setIsEditing] = useState<boolean>(false)
     const date: string = new Date(workout.timestamp * 1000).toDateString();
@@ -26,9 +26,14 @@ function WorkoutCardMini(props: Readonly<CardProps>) {
         setIsEditing(true)
     };
 
-    function handleSave () {
-        console.log("Now it's time for data flow")
-    };
+    function handleSave() {
+        if (todaysWorkout) {
+            updateWorkout(todaysWorkout); // Update the workout via prop
+            setIsEditing(false); // Exit edit mode
+        } else {
+            console.error("No workout to save!");
+        }
+    }
 
     function handleDelete () {
         console.log("Now it's time for data flow")

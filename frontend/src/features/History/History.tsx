@@ -15,7 +15,8 @@ function History(props: HistoryProps) {
     return (
         <>
             {workouts.map((workout) => (
-                <WorkoutCardMini key={workout.id} workout={workout} updateWorkout={updateWorkout} setTodaysWorkout={setTodaysWorkout} todaysWorkout={todaysWorkout}/>
+                <WorkoutCardMini key={workout.id} workout={workout} updateWorkout={updateWorkout}
+                                 setTodaysWorkout={setTodaysWorkout} todaysWorkout={todaysWorkout}/>
             ))}
         </>
     );
