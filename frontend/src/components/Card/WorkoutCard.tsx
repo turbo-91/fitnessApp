@@ -3,6 +3,8 @@ import {CardContainer, ValueContainer, ValueContainerWrapper} from "./WorkoutCar
 
 export interface CardProps {
 workout: Workout;
+    thisWorkout: Workout | null;
+    setThisWorkout: (workout: Workout) => void,
 }
 
 function WorkoutCard(props: Readonly<CardProps>) {

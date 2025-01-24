@@ -13,6 +13,7 @@ import History from "./features/History/History.tsx";
 function App() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [newestWorkouts, setNewestWorkouts] = useState<Workout[]>([]);
+  const [thisWorkout, setThisWorkout] = useState<Workout | null>(null);
   const [finishedWorkout, setFinishedWorkout] = useState<Workout | null>(null);
   const [todaysWorkout, setTodaysWorkout] = useState<Workout | null>(null);
 
@@ -66,6 +67,21 @@ function App() {
             });
     };
 
+    const deleteWorkout = (workout: Workout) => {
+        console.log("Deleting workout with ID:", workout.id);
+        axios
+            .delete(`http://localhost:8080/api/workouts/${workout.id}`)
+            .then(() => {
+                setWorkouts((prevWorkouts) =>
+                    prevWorkouts.filter((w) => w.id !== workout.id)
+                );
+                console.log("Delete successful");
+            })
+            .catch((error) => {
+                console.error("Error deleting workout:", error);
+            });
+    };
+
     return (
         <AppContainer>
             <Header />
@@ -73,12 +89,17 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={<LetsWorkout setTodaysWorkout={setTodaysWorkout} todaysWorkout={todaysWorkout} newestWorkouts={newestWorkouts} finishedWorkout={finishedWorkout} setFinishedWorkout={setFinishedWorkout} addWorkout={addWorkout}/>}
+                        element={<LetsWorkout setTodaysWorkout={setTodaysWorkout} todaysWorkout={todaysWorkout}
+                                              newestWorkouts={newestWorkouts} finishedWorkout={finishedWorkout}
+                                              setFinishedWorkout={setFinishedWorkout} addWorkout={addWorkout}
+                                              thisWorkout={thisWorkout} setThisWorkout={setThisWorkout}/>}
                     />
                     <Route
                         path="/history"
                         element={
-                            <History workouts={workouts} updateWorkout={updateWorkout} setTodaysWorkout={setTodaysWorkout} todaysWorkout={todaysWorkout}/>
+                            <History workouts={workouts} updateWorkout={updateWorkout} setTodaysWorkout={setTodaysWorkout}
+                                     todaysWorkout={todaysWorkout} deleteWorkout={deleteWorkout}
+                                     thisWorkout={thisWorkout} setThisWorkout={setThisWorkout}/>
                         }
                     />
                 </Routes>

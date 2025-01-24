@@ -8,12 +8,15 @@ import WorkoutCardForm from "../Form/WorkoutCardForm.tsx";
 export interface CardProps {
     workout: Workout;
     updateWorkout: (updatedWorkout: Workout) => void
-    todaysWorkout: Workout;
+    todaysWorkout: Workout| null;
     setTodaysWorkout: (workout: Workout | null) => void;
+    deleteWorkout: (deletedWorkout: Workout) => void;
+    thisWorkout: Workout | null;
+    setThisWorkout: (workout: Workout) => void,
 }
 
 function WorkoutCardMini(props: Readonly<CardProps>) {
-    const { workout, setTodaysWorkout, todaysWorkout, updateWorkout } = props;
+    const { workout, setTodaysWorkout, updateWorkout, deleteWorkout, thisWorkout, setThisWorkout } = props;
     const [details, setDetails] = useState<boolean>(false)
     const [isEditing, setIsEditing] = useState<boolean>(false)
     const date: string = new Date(workout.timestamp * 1000).toDateString();
@@ -27,8 +30,8 @@ function WorkoutCardMini(props: Readonly<CardProps>) {
     };
 
     function handleSave() {
-        if (todaysWorkout) {
-            updateWorkout(todaysWorkout); // Update the workout via prop
+        if (workout) {
+            updateWorkout(workout); // Update the workout via prop
             setIsEditing(false); // Exit edit mode
         } else {
             console.error("No workout to save!");
@@ -36,7 +39,12 @@ function WorkoutCardMini(props: Readonly<CardProps>) {
     }
 
     function handleDelete () {
-        console.log("Now it's time for data flow")
+        if (workout) {
+            deleteWorkout(workout); // Update the workout via prop
+            setIsEditing(false); // Exit edit mode
+        } else {
+            console.error("No workout to delete!");
+        }
     };
 
     return (
@@ -45,7 +53,7 @@ function WorkoutCardMini(props: Readonly<CardProps>) {
             {isEditing ? (
                 // Render only the form and buttons when editing
                 <>
-                    <WorkoutCardForm workout={workout} setTodaysWorkout={setTodaysWorkout}/>
+                    <WorkoutCardForm thisWorkout={thisWorkout} setThisWorkout={setThisWorkout} setTodaysWorkout={setTodaysWorkout}/>
                     <Button label={"save"} onClick={handleSave}/>
                     <Button label={"delete"} onClick={handleDelete}/>
                 </>

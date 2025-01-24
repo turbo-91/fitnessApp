@@ -23,6 +23,12 @@ public class WorkoutController {
         return workoutService.getAllWorkouts();
     }
 
+    @GetMapping("/{id}")
+    public Workout getById(@PathVariable String id) {
+        System.out.println("Fetching workout with ID: " + id);
+        return workoutService.getWorkoutById(id);
+    }
+
     @PostMapping
     Workout createWorkout(@RequestBody Workout workout)
     {
@@ -37,4 +43,12 @@ public class WorkoutController {
         return workoutService.updateWorkout(workout);
     }
 
+    @DeleteMapping("/{id}")
+    void delete(@PathVariable String id)
+    {
+        System.out.println("Delete request received for ID: " + id);
+        workoutService.deleteWorkout(id);
+    }
 }
+
+
