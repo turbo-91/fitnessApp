@@ -5,7 +5,7 @@ import java.util.List;
 public record Exercise(
         String id,
         String name,
-        int kg,
+        double kg,
         List<Integer> set,
         String notes
 ) {
