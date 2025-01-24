@@ -2,7 +2,6 @@ import {Workout} from "../../types/Workout.ts";
 import {CardContainer, ValueContainerWrapper} from "./WorkoutCardForm.styles.ts";
 
 export interface FormCardProps {
-    setTodaysWorkout: (workout: Workout) => void,
     thisWorkout: Workout | null;
     setThisWorkout: (workout: Workout) => void,
 }

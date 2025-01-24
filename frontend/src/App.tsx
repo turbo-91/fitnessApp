@@ -97,8 +97,7 @@ function App() {
                     <Route
                         path="/history"
                         element={
-                            <History workouts={workouts} updateWorkout={updateWorkout} setTodaysWorkout={setTodaysWorkout}
-                                     todaysWorkout={todaysWorkout} deleteWorkout={deleteWorkout}
+                            <History workouts={workouts} updateWorkout={updateWorkout} deleteWorkout={deleteWorkout}
                                      thisWorkout={thisWorkout} setThisWorkout={setThisWorkout}/>
                         }
                     />

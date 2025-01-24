@@ -8,26 +8,24 @@ import WorkoutCardForm from "../Form/WorkoutCardForm.tsx";
 export interface CardProps {
     workout: Workout;
     updateWorkout: (updatedWorkout: Workout) => void
-    todaysWorkout: Workout| null;
-    setTodaysWorkout: (workout: Workout | null) => void;
     deleteWorkout: (deletedWorkout: Workout) => void;
     thisWorkout: Workout | null;
     setThisWorkout: (workout: Workout) => void,
 }
 
 function WorkoutCardMini(props: Readonly<CardProps>) {
-    const { workout, setTodaysWorkout, updateWorkout, deleteWorkout, thisWorkout, setThisWorkout } = props;
+    const { workout, updateWorkout, deleteWorkout, thisWorkout, setThisWorkout } = props;
     const [details, setDetails] = useState<boolean>(false)
     const [isEditing, setIsEditing] = useState<boolean>(false)
     const date: string = new Date(workout.timestamp * 1000).toDateString();
 
     function toggleDetails() {
         setDetails((prevState: boolean) => !prevState);
-    };
+    }
 
     function handleEdit () {
         setIsEditing(true)
-    };
+    }
 
     function handleSave() {
         if (workout) {
@@ -45,7 +43,7 @@ function WorkoutCardMini(props: Readonly<CardProps>) {
         } else {
             console.error("No workout to delete!");
         }
-    };
+    }
 
     return (
         <CardContainer>
@@ -53,7 +51,7 @@ function WorkoutCardMini(props: Readonly<CardProps>) {
             {isEditing ? (
                 // Render only the form and buttons when editing
                 <>
-                    <WorkoutCardForm thisWorkout={thisWorkout} setThisWorkout={setThisWorkout} setTodaysWorkout={setTodaysWorkout}/>
+                    <WorkoutCardForm thisWorkout={thisWorkout} setThisWorkout={setThisWorkout}/>
                     <Button label={"save"} onClick={handleSave}/>
                     <Button label={"delete"} onClick={handleDelete}/>
                 </>
