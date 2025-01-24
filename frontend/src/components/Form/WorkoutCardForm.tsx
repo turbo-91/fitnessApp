@@ -1,13 +1,13 @@
-import { Workout } from "../../types/Workout.ts";
-import { CardContainer, ValueContainerWrapper } from "./WorkoutCardForm.styles.ts";
+import {Workout} from "../../types/Workout.ts";
+import {CardContainer, ValueContainerWrapper} from "./WorkoutCardForm.styles.ts";
 
 export interface FormCardProps {
-    workout: Workout;
-    setTodaysWorkout: (workout: Workout) => void; // Pass the state setter from parent
+    thisWorkout: Workout | null;
+    setThisWorkout: (workout: Workout) => void,
 }
 
 function WorkoutCardForm(props: Readonly<FormCardProps>) {
-    const { workout, setTodaysWorkout } = props;
+    const {thisWorkout, setThisWorkout} = props;
 
     const handleInputChange = (
         field: string,
@@ -15,27 +15,37 @@ function WorkoutCardForm(props: Readonly<FormCardProps>) {
         exerciseIndex?: number,
         setIndex?: number
     ) => {
-        // Create a deep copy of the workout
-        const updatedWorkout = { ...workout };
+        if (!thisWorkout) return;
+
+        // Use structured cloning for immutability
+        const updatedWorkout = { ...thisWorkout };
+
+        // If modifying a specific exercise
         if (exerciseIndex !== undefined) {
+            const updatedExercise = { ...updatedWorkout.exercises[exerciseIndex] };
+
+            // If modifying a specific set value
             if (setIndex !== undefined) {
-                // Update specific set rep value
-                updatedWorkout.exercises[exerciseIndex].set[setIndex] = Number(value);
-            } else if (field === "kg" || field === "notes") {
-                // Update kg or notes for an exercise
-                (updatedWorkout.exercises[exerciseIndex] as any)[field] = value;
+                updatedExercise.set = [...updatedExercise.set];
+                updatedExercise.set[setIndex] = Number(value); // Update the set rep
+            } else {
+                updatedExercise[field] = value; // Update other fields (e.g., "kg" or "notes")
             }
+
+            // Update the exercises array
+            updatedWorkout.exercises = [...updatedWorkout.exercises];
+            updatedWorkout.exercises[exerciseIndex] = updatedExercise;
         }
 
-        setTodaysWorkout(updatedWorkout); // Update the workout in state
+        setThisWorkout(updatedWorkout);
     };
 
-    const date: string = new Date(workout.timestamp * 1000).toDateString();
+    const date: string = new Date(thisWorkout.timestamp * 1000).toDateString();
 
     return (
         <CardContainer>
-            <h2>{date} - {workout.name}</h2>
-            {workout.exercises.map((exercise, exerciseIndex) => (
+            <h2>{date} - {thisWorkout.name}</h2>
+            {thisWorkout.exercises.map((exercise, exerciseIndex) => (
                 <div key={exercise.id}>
                     <p>{exercise.name}:</p>
                     <ValueContainerWrapper>

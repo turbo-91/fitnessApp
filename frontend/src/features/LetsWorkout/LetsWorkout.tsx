@@ -1,7 +1,6 @@
 import {DropdownContainer, Select} from "../../components/Dropdown/Dropdown.styles.ts";
 import {Workout} from "../../types/Workout.ts";
 import {ChangeEvent, useState} from "react";
-import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button.tsx";
 import WorkoutCardForm from "../../components/Form/WorkoutCardForm.tsx";
 import WorkoutCard from "../../components/Card/WorkoutCard.tsx";
@@ -12,12 +11,15 @@ type LetsWorkoutProps = {
     finishedWorkout: Workout | null;
     setFinishedWorkout: (workout: Workout | null) => void;
     addWorkout: (workout: Workout) => void;
+    todaysWorkout: Workout | null;
+    setTodaysWorkout: (workout: Workout | null) => void;
+    thisWorkout: Workout | null;
+    setThisWorkout: (workout: Workout) => void,
 };
 
 function LetsWorkout(props: LetsWorkoutProps) {
-    const { newestWorkouts, finishedWorkout, setFinishedWorkout, addWorkout } = props;
+    const { newestWorkouts, finishedWorkout, setFinishedWorkout, addWorkout, todaysWorkout, setTodaysWorkout, thisWorkout, setThisWorkout } = props;
     const [selectedWorkoutId, setSelectedWorkoutId] = useState<string>("");
-    const [todaysWorkout, setTodaysWorkout] = useState<Workout | null>(null);
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
 
@@ -51,10 +53,8 @@ function LetsWorkout(props: LetsWorkoutProps) {
         setSelectedWorkoutId("");
     };
 
-    const navigate = useNavigate();
-
     const handleBackToHome = () => {
-        navigate("/"); // Navigate to the home route
+        window.location.reload();
     };
 
     const selectedWorkout = newestWorkouts.find((w) => w.id === selectedWorkoutId) || null;
@@ -85,6 +85,8 @@ function LetsWorkout(props: LetsWorkoutProps) {
                             {/* Display the selected workout with the updated timestamp */}
                             <WorkoutCard
                                 workout={selectedWorkout}
+                                thisWorkout={thisWorkout}
+                                setThisWorkout={setThisWorkout}
                             />
                             <Button
                                 label={"Start Workout"}
@@ -100,7 +102,8 @@ function LetsWorkout(props: LetsWorkoutProps) {
                 <>
                     {/* Render the form */}
                     <WorkoutCardForm
-                        workout={todaysWorkout}
+                        thisWorkout={todaysWorkout}
+                        setThisWorkout={setThisWorkout}
                         setTodaysWorkout={setTodaysWorkout} // Pass state setter to update directly from the form
                     />
                     {/* Finish button */}

@@ -7,7 +7,7 @@ function Footer() {
 
     return (
         <FooterContainer>
-            <Link to="/home" style={{ textDecoration: "none", color: "white" }}>
+            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
                 <p>workout</p>
             </Link>
             <Link to="/history" style={{ textDecoration: "none", color: "white" }}>
