@@ -42,6 +42,7 @@ class WorkoutControllerTest {
                         new Exercise("exercise2", "Bench Press", 40, List.of(10, 8, 6), "Ensure proper grip and avoid locking elbows."),
                         new Exercise("exercise3", "Deadlift", 80, List.of(8, 6, 4), "Maintain a straight back throughout the lift.")
                 ),
+                null,
                 1705400659
         );
         repo.save(workout);
@@ -105,6 +106,7 @@ class WorkoutControllerTest {
                         new Exercise("exercise2", "Bench Press", 40, List.of(10, 8, 6), "Ensure proper grip and avoid locking elbows."),
                         new Exercise("exercise3", "Deadlift", 80, List.of(8, 6, 4), "Maintain a straight back throughout the lift.")
                 ),
+                null,
                 1705400659
         );
         repo.save(workout);
@@ -206,6 +208,7 @@ class WorkoutControllerTest {
                         new Exercise("exercise1", "Squat", 60, List.of(10, 8, 6), "Focus on depth and control."),
                         new Exercise("exercise2", "Bench Press", 40, List.of(10, 8, 6), "Ensure proper grip and avoid locking elbows.")
                 ),
+                null,
                 1705400659
         );
         repo.save(existingWorkout);
@@ -262,6 +265,7 @@ class WorkoutControllerTest {
                 List.of(
                         new Exercise("exercise1", "Squat", 60, List.of(10, 8, 6), "Focus on depth and control.")
                 ),
+                null,
                 1705400659
         );
         repo.save(existingWorkout);
@@ -300,6 +304,7 @@ class WorkoutControllerTest {
                         new Exercise("exercise1", "Squat", 60, List.of(10, 8, 6), "Focus on depth and control."),
                         new Exercise("exercise2", "Bench Press", 40, List.of(10, 8, 6), "Ensure proper grip and avoid locking elbows.")
                 ),
+                null,
                 1705400659
         );
         repo.save(existingWorkout);

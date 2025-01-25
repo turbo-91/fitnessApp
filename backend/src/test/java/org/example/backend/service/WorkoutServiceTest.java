@@ -28,6 +28,7 @@ private final IdService idService= mock(IdService.class);
                         new Exercise("exercise2", "Bench Press", 40, List.of(10, 8, 6), "Ensure proper grip and avoid locking elbows."),
                         new Exercise("exercise3", "Deadlift", 80, List.of(8, 6, 4), "Maintain a straight back throughout the lift.")
                 ),
+                null,
                 1705400659
         );
 
@@ -39,6 +40,7 @@ private final IdService idService= mock(IdService.class);
                         new Exercise("exercise5", "Incline Dumbbell Press", 20, List.of(12, 10, 8), "Adjust the incline for optimal chest engagement."),
                         new Exercise("exercise6", "Lateral Raises", 10, List.of(15, 12, 10), "Avoid swinging the weights and keep arms slightly bent.")
                 ),
+                null,
                 1705400659
         );;
 
@@ -69,6 +71,7 @@ private final IdService idService= mock(IdService.class);
                         new Exercise("exercise2", "Bench Press", 40, List.of(10, 8, 6), "Ensure proper grip and avoid locking elbows."),
                         new Exercise("exercise3", "Deadlift", 80, List.of(8, 6, 4), "Maintain a straight back throughout the lift.")
                 ),
+                null,
                 1705400659
         );
 
@@ -114,6 +117,7 @@ private final IdService idService= mock(IdService.class);
                         new Exercise("exercise2", "Bench Press", 40, List.of(10, 8, 6), "Ensure proper grip and avoid locking elbows."),
                         new Exercise("exercise3", "Deadlift", 80, List.of(8, 6, 4), "Maintain a straight back throughout the lift.")
                 ),
+                null,
                 1705400659
         );
         Workout expectedWorkout = inputWorkout.withId(generatedId);
@@ -144,6 +148,7 @@ private final IdService idService= mock(IdService.class);
                         new Exercise("exercise2", "Bench Press", 40, List.of(10, 8, 6), "Ensure proper grip and avoid locking elbows."),
                         new Exercise("exercise3", "Deadlift", 80, List.of(8, 6, 4), "Maintain a straight back throughout the lift.")
                 ),
+                null,
                 1705400659
         );
 
@@ -154,6 +159,7 @@ private final IdService idService= mock(IdService.class);
                         new Exercise("exercise1", "Squat", 65, List.of(10, 8, 6), "Focus on depth and control."),
                         new Exercise("exercise2", "Bench Press", 45, List.of(10, 8, 6), "Ensure proper grip and avoid locking elbows.")
                 ),
+                null,
                 1705400659
         );
 
@@ -181,6 +187,7 @@ private final IdService idService= mock(IdService.class);
                 List.of(
                         new Exercise("exercise1", "Squat", 60, List.of(10, 8, 6), "Focus on depth and control.")
                 ),
+                null,
                 1705400659
         );
 
