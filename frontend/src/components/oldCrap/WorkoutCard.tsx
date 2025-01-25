@@ -2,19 +2,19 @@ import {Workout} from "../../types/Workout.ts";
 import {CardContainer, ValueContainer, ValueContainerWrapper} from "./WorkoutCard.styles.ts";
 
 export interface CardProps {
-    miniWorkout: Workout;
-    formWorkout: Workout | null;
-    setFormWorkout: (workout: Workout) => void,
+workout: Workout;
+    thisWorkout: Workout | null;
+    setThisWorkout: (workout: Workout) => void,
 }
 
 function WorkoutCard(props: Readonly<CardProps>) {
-    const { miniWorkout, formWorkout, setFormWorkout } = props;
-    const date: string = new Date(miniWorkout.timestamp * 1000).toDateString();
+    const { workout } = props;
+    const date: string = new Date(workout.timestamp * 1000).toDateString();
 
     return (
         <CardContainer>
-            <h2>{date} - {miniWorkout.name}</h2>
-            {miniWorkout.exercises.map((exercise) => (
+            <h2>{date} - {workout.name}</h2>
+            {workout.exercises.map((exercise) => (
                 <div key={exercise.id}>
                     <p>{exercise.name}: </p>
                     <ValueContainerWrapper>

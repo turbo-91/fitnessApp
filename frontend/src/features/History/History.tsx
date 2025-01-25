@@ -1,24 +1,22 @@
 import {Workout} from "../../types/Workout.ts";
 import WorkoutCardMini from "../../components/CardMini/WorkoutCardMini.tsx";
+import {useState} from "react";
 
 
 type HistoryProps = {
-    workouts: Workout[],
-    updateWorkout: (updatedWorkout: Workout) => void;
-    deleteWorkout: (deletedWorkout: Workout) => void;
-    thisWorkout: Workout | null;
-    setThisWorkout: (workout: Workout) => void,
+    formWorkout: Workout | null;
+    setFormWorkout: (workout: Workout) => void,
+    allWorkouts: Workout[];
 };
 
 function History(props: HistoryProps) {
-    const {workouts, updateWorkout, deleteWorkout, thisWorkout, setThisWorkout} = props;
+    const {allWorkouts, formWorkout, setFormWorkout} = props;
 
     return (
         <>
-            {workouts.map((workout) => (
-                <WorkoutCardMini key={workout.id} workout={workout} updateWorkout={updateWorkout}
-                                 deleteWorkout={deleteWorkout} thisWorkout={thisWorkout}
-                                 setThisWorkout={setThisWorkout}/>
+            {allWorkouts.map((workout: Workout) => (
+                <>
+                    <WorkoutCardMini key={workout.id} miniWorkout={workout} formWorkout={formWorkout} setFormWorkout={setFormWorkout}/></>
             ))}
         </>
     );
