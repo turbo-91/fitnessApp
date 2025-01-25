@@ -1,35 +1,82 @@
 import {Workout} from "../../types/Workout.ts";
 import {CardContainer, ValueContainer, ValueContainerWrapper} from "./WorkoutCard.styles.ts";
+import {useEffect, useState} from "react";
+import Button from "../Button/Button.tsx";
+import WorkoutCardForm from "../Form/WorkoutCardForm.tsx";
 
 export interface CardProps {
-workout: Workout;
-    thisWorkout: Workout | null;
-    setThisWorkout: (workout: Workout) => void,
+    workout: Workout;
+    formWorkout: Workout;
+    setFormWorkout: (workout: Workout) => void,
+    toggleDetails: () => void,
+    deleteWorkout: (deletedWorkout: Workout) => void;
+    updateWorkout: (updatedWorkout: Workout) => void;
 }
 
 function WorkoutCard(props: Readonly<CardProps>) {
-    const { workout } = props;
+    const { workout, formWorkout, setFormWorkout, toggleDetails, deleteWorkout, updateWorkout } = props;
+    const [isEditing, setIsEditing] = useState<boolean>(false)
+
+    useEffect(() => {
+        console.log("workout in WorkoutCard", workout)
+        console.log("formWorkout in WorkoutCard", formWorkout)
+    }, []);
+
+
+    function handleEdit() {
+        setIsEditing(true)
+        console.log("isEditing in handleEdit", isEditing)
+    }
+
+    function handleDelete () {
+        if (workout) {
+            deleteWorkout(workout);
+            setIsEditing(false);
+        } else {
+            console.error("No workout to delete!");
+        }
+    };
+
     const date: string = new Date(workout.timestamp * 1000).toDateString();
 
+
     return (
-        <CardContainer>
-            <h2>{date} - {workout.name}</h2>
-            {workout.exercises.map((exercise) => (
-                <div key={exercise.id}>
-                    <p>{exercise.name}: </p>
-                    <ValueContainerWrapper>
-                        <p>kg:</p>
-                        <ValueContainer>{exercise.kg}</ValueContainer>
-                        <p>reps:</p>
-                        {exercise.set.map((rep: number, index: number) => (
-                            <ValueContainer key={index}>{rep}</ValueContainer>
-                        ))}
-                    </ValueContainerWrapper>
-                    <ValueContainerWrapper><p>notes:</p><ValueContainer>{exercise.notes}</ValueContainer></ValueContainerWrapper>
-                </div>
-            ))}
-        </CardContainer>
-    );
-}
+        <>
+            {!isEditing ? (
+                <CardContainer>
+                    <h2>{date} - {workout.name}</h2>
+                    <Button label={"Close"} onClick={toggleDetails} />
+                    <Button label={"Edit"} onClick={handleEdit} />
+                    <Button label={"Delete"} onClick={() => handleDelete()} />
+                    {workout.exercises.map((exercise) => (
+                        <div key={exercise.uniqueIdentifier}>
+                            <p>{exercise.name}: </p>
+                            <ValueContainerWrapper>
+                                <p>kg:</p>
+                                <ValueContainer>{exercise.kg}</ValueContainer>
+                                <p>reps:</p>
+                                {exercise.set.map((rep: number, index: number) => (
+                                    <ValueContainer key={index}>{rep}</ValueContainer>
+                                ))}
+                            </ValueContainerWrapper>
+                            <ValueContainerWrapper>
+                                <p>notes:</p>
+                                <ValueContainer>{exercise.notes}</ValueContainer>
+                            </ValueContainerWrapper>
+                        </div>
+                    ))}
+                </CardContainer>
+            ) : (
+                <WorkoutCardForm
+                    workout={workout}
+                    formWorkout={formWorkout}
+                    setFormWorkout={setFormWorkout}
+                    updateWorkout={updateWorkout}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
+                />
+            )}
+        </>
+    );}
 
 export default WorkoutCard;

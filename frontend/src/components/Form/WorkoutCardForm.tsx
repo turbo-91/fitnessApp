@@ -1,60 +1,68 @@
-import {Workout} from "../../types/Workout.ts";
-import {CardContainer, ValueContainerWrapper} from "./WorkoutCardForm.styles.ts";
+import { useEffect } from "react";
+import { Workout } from "../../types/Workout.ts";
+import { CardContainer, ValueContainerWrapper } from "./WorkoutCardForm.styles.ts";
+import Button from "../Button/Button.tsx";
+import { Exercise } from "../../types/Exercise.ts";
 
 export interface FormCardProps {
-    thisWorkout: Workout | null;
-    setThisWorkout: (workout: Workout) => void,
+    workout: Workout;
+    formWorkout: Workout;
+    setFormWorkout: (workout: Workout) => void;
+    updateWorkout: (updatedWorkout: Workout) => void;
+    setIsEditing: (isEditing: boolean) => void;
+    isEditing: Boolean;
 }
 
 function WorkoutCardForm(props: Readonly<FormCardProps>) {
-    const {thisWorkout, setThisWorkout} = props;
+    const { formWorkout, setFormWorkout, updateWorkout, setIsEditing, isEditing, workout } = props;
 
-    const handleInputChange = (
-        field: string,
-        value: string | number,
-        exerciseIndex?: number,
-        setIndex?: number
-    ) => {
-        if (!thisWorkout) return;
+    useEffect(() => {
+        setFormWorkout(workout); // Sync formWorkout with workout on mount/update
+    }, [workout]);
 
-        // Use structured cloning for immutability
-        const updatedWorkout = { ...thisWorkout };
+    function handleSave() {
+        updateWorkout(formWorkout); // Send updated workout to API
+        setIsEditing(false); // Exit edit mode
+    }
 
-        // If modifying a specific exercise
-        if (exerciseIndex !== undefined) {
-            const updatedExercise = { ...updatedWorkout.exercises[exerciseIndex] };
+    function handleExerciseChange(exerciseId: string, field: keyof Exercise, value: any) {
+        const updatedExercises = formWorkout.exercises.map((exercise) =>
+            exercise.uniqueIdentifier === exerciseId
+                ? { ...exercise, [field]: value }
+                : exercise
+        );
+        setFormWorkout({ ...formWorkout, exercises: updatedExercises });
+    }
 
-            // If modifying a specific set value
-            if (setIndex !== undefined) {
-                updatedExercise.set = [...updatedExercise.set];
-                updatedExercise.set[setIndex] = Number(value); // Update the set rep
-            } else {
-                updatedExercise[field] = value; // Update other fields (e.g., "kg" or "notes")
-            }
+    function handleSetChange(exerciseId: string, setIndex: number, value: number) {
+        const updatedExercises = formWorkout.exercises.map((exercise) =>
+            exercise.uniqueIdentifier === exerciseId
+                ? {
+                    ...exercise,
+                    set: exercise.set.map((rep, index) =>
+                        index === setIndex ? value : rep
+                    ),
+                }
+                : exercise
+        );
+        setFormWorkout({ ...formWorkout, exercises: updatedExercises });
+    }
 
-            // Update the exercises array
-            updatedWorkout.exercises = [...updatedWorkout.exercises];
-            updatedWorkout.exercises[exerciseIndex] = updatedExercise;
-        }
-
-        setThisWorkout(updatedWorkout);
-    };
-
-    const date: string = new Date(thisWorkout.timestamp * 1000).toDateString();
+    const date: string = new Date(workout.timestamp * 1000).toDateString();
 
     return (
         <CardContainer>
-            <h2>{date} - {thisWorkout.name}</h2>
-            {thisWorkout.exercises.map((exercise, exerciseIndex) => (
-                <div key={exercise.id}>
+            <h2>{date} - {workout.name}</h2>
+            <Button label={"save"} onClick={handleSave} />
+            {formWorkout.exercises.map((exercise) => (
+                <div key={exercise.uniqueIdentifier}>
                     <p>{exercise.name}:</p>
                     <ValueContainerWrapper>
                         <p>kg:</p>
                         <input
-
                             value={exercise.kg}
                             onChange={(e) =>
-                                handleInputChange("kg", Number(e.target.value), exerciseIndex)
+                                handleExerciseChange(exercise.uniqueIdentifier, "kg", Number(e.target.value))
                             }
                         />
                         <p>reps:</p>
@@ -64,7 +72,7 @@ function WorkoutCardForm(props: Readonly<FormCardProps>) {
                                 type="number"
                                 value={rep}
                                 onChange={(e) =>
-                                    handleInputChange("set", Number(e.target.value), exerciseIndex, setIndex)
+                                    handleSetChange(exercise.uniqueIdentifier, setIndex, Number(e.target.value))
                                 }
                             />
                         ))}
@@ -75,7 +83,7 @@ function WorkoutCardForm(props: Readonly<FormCardProps>) {
                             type="text"
                             value={exercise.notes}
                             onChange={(e) =>
-                                handleInputChange("notes", e.target.value, exerciseIndex)
+                                handleExerciseChange(exercise.uniqueIdentifier, "notes", e.target.value)
                             }
                         />
                     </ValueContainerWrapper>

@@ -6,7 +6,7 @@ import java.util.List;
 
 @Document(collection = "workouts")
 public record Workout(
-        String id,
+        String id, // Maps to MongoDB's "_id"
         String name,
         List<Exercise> exercises,
         Integer timestamp
@@ -19,5 +19,4 @@ public record Workout(
     public Workout withId(String id) {
         return new Workout(id, name, exercises, timestamp);
     }
-
 }

@@ -5,35 +5,48 @@ import {Workout} from "./types/Workout.ts";
 import {Route, Routes} from "react-router-dom";
 import Header from "./components/Header/Header.tsx";
 import Footer from "./components/Footer/Footer.tsx";
+import LetsWorkout from "./features/LetsWorkout/LetsWorkout.tsx";
 import {AppContainer} from "./App.styles.ts";
 import History from "./features/History/History.tsx";
 
 
 function App() {
-    const [formWorkout, setFormWorkout] = useState<Workout | null>(null);
-    const [allWorkouts, setAllWorkouts] = useState<Workout[]>([]);
-    const [dropDownWorkouts, setDropdownWorkouts] = useState<Workout[]>([]);
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [newestWorkouts, setNewestWorkouts] = useState<Workout[]>([]);
+  const [thisWorkout, setThisWorkout] = useState<Workout | null>(null);
+  const [finishedWorkout, setFinishedWorkout] = useState<Workout | null>(null);
+  const [todaysWorkout, setTodaysWorkout] = useState<Workout | null>(null);
+
 
     const fetchWorkouts = () => {
         axios
             .get<Workout[]>("http://localhost:8080/api/workouts") // Ensure the response matches the type
             .then((response) => {
                 const allWorkouts = response.data;
-                console.log("ids in response?", response.data)
                 const sortedNewestWorkouts = [...allWorkouts]
                     .sort((a, b) => b.timestamp - a.timestamp)
                     .slice(0, 4);
-                setAllWorkouts(allWorkouts);
-                setDropdownWorkouts(sortedNewestWorkouts);
+                setWorkouts(allWorkouts);
+                setNewestWorkouts(sortedNewestWorkouts);
             })
             .catch((error) => {
                 console.error("Error fetching Workouts from Backend", error);
             });
     };
 
+    const addWorkout = (workout: Workout) => {
+        axios
+            .post<Workout>("http://localhost:8080/api/workouts", workout)
+            .then((response) => {
+                setWorkouts((prevWorkouts) => [...prevWorkouts, response.data]); // Append the new workout to the workouts state
+            })
+            .catch((error) => {
+                console.error("Error adding new workout:", error);
+            });
+    };
+
     useEffect(() => {
         fetchWorkouts();
-        console.log("allWorkouts after fetch", allWorkouts)
     }, []);
 
     const updateWorkout = (workout: Workout) => {
@@ -45,7 +58,7 @@ function App() {
                 console.log("Update successful:", updatedWorkout);
 
                 // Update the workouts state
-                setAllWorkouts(prevWorkouts =>
+                setWorkouts(prevWorkouts =>
                     prevWorkouts.map(w => (w.id === updatedWorkout.id ? updatedWorkout : w))
                 );
             })
@@ -59,7 +72,7 @@ function App() {
         axios
             .delete(`http://localhost:8080/api/workouts/${workout.id}`)
             .then(() => {
-                setAllWorkouts((prevWorkouts) =>
+                setWorkouts((prevWorkouts) =>
                     prevWorkouts.filter((w) => w.id !== workout.id)
                 );
                 console.log("Delete successful");
@@ -69,7 +82,6 @@ function App() {
             });
     };
 
-
     return (
         <AppContainer>
             <Header />
@@ -77,14 +89,16 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
-
+                        element={<LetsWorkout setTodaysWorkout={setTodaysWorkout} todaysWorkout={todaysWorkout}
+                                              newestWorkouts={newestWorkouts} finishedWorkout={finishedWorkout}
+                                              setFinishedWorkout={setFinishedWorkout} addWorkout={addWorkout}
+                                              thisWorkout={thisWorkout} setThisWorkout={setThisWorkout}/>}
                     />
                     <Route
                         path="/history"
                         element={
-                            <History formWorkout={formWorkout} setFormWorkout={setFormWorkout} allWorkouts={allWorkouts}
-                                     updateWorkout={updateWorkout} deleteWorkout={deleteWorkout}
-                            />
+                            <History workouts={workouts} updateWorkout={updateWorkout} deleteWorkout={deleteWorkout}
+                                     thisWorkout={thisWorkout} setThisWorkout={setThisWorkout}/>
                         }
                     />
                 </Routes>

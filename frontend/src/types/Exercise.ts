@@ -1,5 +1,5 @@
 export interface Exercise {
-    id: string;
+    uniqueIdentifier: string;
     name: string;
     kg: number;
     set: number[];

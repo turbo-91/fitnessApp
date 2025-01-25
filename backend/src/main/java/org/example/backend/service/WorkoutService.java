@@ -19,12 +19,13 @@ public class WorkoutService {
 
     public List<Workout> getAllWorkouts() {
         try {
-            return workoutRepo.findAll();
+            List<Workout> workouts = workoutRepo.findAll();
+            System.out.println("Service: Fetched all workouts: " + workouts);
+            return workouts;
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch workouts from the database.", e);
         }
     }
-
     public Workout getWorkoutById(String id) {
         return workoutRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Workout with ID " + id + " not found."));

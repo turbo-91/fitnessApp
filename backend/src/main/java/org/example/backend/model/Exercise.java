@@ -1,9 +1,11 @@
 package org.example.backend.model;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.util.List;
 
 public record Exercise(
-        String id,
+        String uniqueIdentifier,
         String name,
         double kg,
         List<Integer> set,
