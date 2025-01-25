@@ -1,37 +1,44 @@
 import {Workout} from "../../types/Workout.ts";
 import {CardContainer, ValueContainer, ValueContainerWrapper} from "./WorkoutCard.styles.ts";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Button from "../Button/Button.tsx";
 import WorkoutCardForm from "../Form/WorkoutCardForm.tsx";
 
 export interface CardProps {
     workout: Workout;
-    formWorkout: Workout | null;
+    formWorkout: Workout;
     setFormWorkout: (workout: Workout) => void,
-    details: boolean;
     toggleDetails: () => void,
     deleteWorkout: (deletedWorkout: Workout) => void;
+    updateWorkout: (updatedWorkout: Workout) => void;
 }
 
 function WorkoutCard(props: Readonly<CardProps>) {
-    const { workout, formWorkout, setFormWorkout, toggleDetails, deleteWorkout } = props;
+    const { workout, formWorkout, setFormWorkout, toggleDetails, deleteWorkout, updateWorkout } = props;
     const [isEditing, setIsEditing] = useState<boolean>(false)
+
+    useEffect(() => {
+        console.log("workout in WorkoutCard", workout)
+        console.log("formWorkout in WorkoutCard", formWorkout)
+    }, []);
 
 
     function handleEdit() {
         setIsEditing(true)
+        console.log("isEditing in handleEdit", isEditing)
     }
 
     function handleDelete () {
         if (workout) {
             deleteWorkout(workout);
-            setIsEditing(false); 
+            setIsEditing(false);
         } else {
             console.error("No workout to delete!");
         }
     };
 
     const date: string = new Date(workout.timestamp * 1000).toDateString();
+
 
     return (
         <>
@@ -42,7 +49,7 @@ function WorkoutCard(props: Readonly<CardProps>) {
                     <Button label={"Edit"} onClick={handleEdit} />
                     <Button label={"Delete"} onClick={() => handleDelete()} />
                     {workout.exercises.map((exercise) => (
-                        <div key={exercise.id}>
+                        <div key={exercise.uniqueIdentifier}>
                             <p>{exercise.name}: </p>
                             <ValueContainerWrapper>
                                 <p>kg:</p>
@@ -61,8 +68,12 @@ function WorkoutCard(props: Readonly<CardProps>) {
                 </CardContainer>
             ) : (
                 <WorkoutCardForm
-                    formWorkout={workout}
+                    workout={workout}
+                    formWorkout={formWorkout}
                     setFormWorkout={setFormWorkout}
+                    updateWorkout={updateWorkout}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
                 />
             )}
         </>

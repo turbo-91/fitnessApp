@@ -2,19 +2,18 @@ import {Workout} from "../../types/Workout.ts";
 import {CardContainer} from "./WorkoutCardMini.styles.ts";
 import Button from "../Button/Button.tsx";
 import {useState} from "react";
-import {ValueContainer, ValueContainerWrapper} from "../Card/WorkoutCard.styles.ts";
-import WorkoutCardForm from "../Form/WorkoutCardForm.tsx";
 import WorkoutCard from "../Card/WorkoutCard.tsx";
 
-export interface CardProps {
+export interface CardMiniProps {
     miniWorkout: Workout;
-    formWorkout: Workout | null;
+    formWorkout: Workout;
     setFormWorkout: (workout: Workout) => void,
     deleteWorkout: (deletedWorkout: Workout) => void;
+    updateWorkout: (updatedWorkout: Workout) => void;
 }
 
-function WorkoutCardMini(props: Readonly<CardProps>) {
-    const {miniWorkout, formWorkout, setFormWorkout, deleteWorkout } = props;
+function WorkoutCardMini(props: Readonly<CardMiniProps>) {
+    const {miniWorkout, formWorkout, setFormWorkout, deleteWorkout, updateWorkout } = props;
     const [details, setDetails] = useState<boolean>(false)
 
     const date: string = new Date(miniWorkout.timestamp * 1000).toDateString();
@@ -58,6 +57,7 @@ function WorkoutCardMini(props: Readonly<CardProps>) {
                     setFormWorkout={setFormWorkout}
                     toggleDetails={toggleDetails}
                     deleteWorkout={deleteWorkout}
+                    updateWorkout={updateWorkout}
                 />
                 </>
             )}
