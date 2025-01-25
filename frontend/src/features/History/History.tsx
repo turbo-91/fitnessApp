@@ -7,16 +7,18 @@ type HistoryProps = {
     formWorkout: Workout | null;
     setFormWorkout: (workout: Workout) => void,
     allWorkouts: Workout[];
+    deleteWorkout: (deletedWorkout: Workout) => void;
 };
 
 function History(props: HistoryProps) {
-    const {allWorkouts, formWorkout, setFormWorkout} = props;
+    const {allWorkouts, formWorkout, setFormWorkout, deleteWorkout} = props;
 
     return (
         <>
             {allWorkouts.map((workout: Workout) => (
                 <>
-                    <WorkoutCardMini key={workout.id} miniWorkout={workout} formWorkout={formWorkout} setFormWorkout={setFormWorkout}/></>
+                    <WorkoutCardMini key={workout.id} miniWorkout={workout} formWorkout={formWorkout}
+                                     setFormWorkout={setFormWorkout} deleteWorkout={deleteWorkout} /></>
             ))}
         </>
     );

@@ -10,12 +10,11 @@ export interface CardProps {
     miniWorkout: Workout;
     formWorkout: Workout | null;
     setFormWorkout: (workout: Workout) => void,
+    deleteWorkout: (deletedWorkout: Workout) => void;
 }
 
 function WorkoutCardMini(props: Readonly<CardProps>) {
-    const {miniWorkout, formWorkout, setFormWorkout} = props;
-
-    const [isEditing, setIsEditing] = useState<boolean>(false)
+    const {miniWorkout, formWorkout, setFormWorkout, deleteWorkout } = props;
     const [details, setDetails] = useState<boolean>(false)
 
     const date: string = new Date(miniWorkout.timestamp * 1000).toDateString();
@@ -24,9 +23,7 @@ function WorkoutCardMini(props: Readonly<CardProps>) {
         setDetails((prevState: boolean) => !prevState);
     }
 
-    function handleEdit() {
-        setIsEditing(true)
-    }
+
 
     // function handleSave() {
     //     if (workout) {
@@ -56,11 +53,13 @@ function WorkoutCardMini(props: Readonly<CardProps>) {
                 </CardContainer>
             ) : (
                 <> <WorkoutCard
-                    miniWorkout={miniWorkout}
+                    workout={miniWorkout}
                     formWorkout={formWorkout}
                     setFormWorkout={setFormWorkout}
+                    toggleDetails={toggleDetails}
+                    deleteWorkout={deleteWorkout}
                 />
-                    <Button label={"Close"} onClick={toggleDetails}/></>
+                </>
             )}
         </>
     );

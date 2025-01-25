@@ -35,6 +35,21 @@ function App() {
         fetchWorkouts();
     }, []);
 
+    const deleteWorkout = (workout: Workout) => {
+        console.log("Deleting workout with ID:", workout.id);
+        axios
+            .delete(`http://localhost:8080/api/workouts/${workout.id}`)
+            .then(() => {
+                setAllWorkouts((prevWorkouts) =>
+                    prevWorkouts.filter((w) => w.id !== workout.id)
+                );
+                console.log("Delete successful");
+            })
+            .catch((error) => {
+                console.error("Error deleting workout:", error);
+            });
+    };
+
 
     return (
         <AppContainer>
@@ -48,7 +63,9 @@ function App() {
                     <Route
                         path="/history"
                         element={
-                            <History formWorkout={formWorkout} setFormWorkout={setFormWorkout} allWorkouts={allWorkouts}/>
+                            <History formWorkout={formWorkout} setFormWorkout={setFormWorkout} allWorkouts={allWorkouts}
+                            deleteWorkout={deleteWorkout}
+                            />
                         }
                     />
                 </Routes>
