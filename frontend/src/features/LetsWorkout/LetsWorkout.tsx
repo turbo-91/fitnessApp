@@ -104,7 +104,6 @@ function LetsWorkout(props: LetsWorkoutProps) {
                     <WorkoutCardForm
                         thisWorkout={todaysWorkout}
                         setThisWorkout={setThisWorkout}
-                        setTodaysWorkout={setTodaysWorkout} // Pass state setter to update directly from the form
                     />
                     {/* Finish button */}
                     <Button

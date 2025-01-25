@@ -9,6 +9,11 @@ export interface FormCardProps {
 function WorkoutCardForm(props: Readonly<FormCardProps>) {
     const {thisWorkout, setThisWorkout} = props;
 
+    // Null check to prevent accessing properties of null
+    if (!thisWorkout) {
+        return <p>Loading...</p>; // Render a fallback message or spinner
+    }
+
     const handleInputChange = (
         field: string,
         value: string | number,

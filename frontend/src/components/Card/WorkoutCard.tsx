@@ -14,6 +14,8 @@ function WorkoutCard(props: Readonly<CardProps>) {
     return (
         <CardContainer>
             <h2>{date} - {workout.name}</h2>
+            <p>notes:</p>
+            <ValueContainer>{workout.notes}</ValueContainer>
             {workout.exercises.map((exercise) => (
                 <div key={exercise.id}>
                     <p>{exercise.name}: </p>

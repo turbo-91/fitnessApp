@@ -24,6 +24,7 @@ function WorkoutCardMini(props: Readonly<CardProps>) {
     }
 
     function handleEdit () {
+        setThisWorkout(workout);
         setIsEditing(true)
     }
 
@@ -47,13 +48,17 @@ function WorkoutCardMini(props: Readonly<CardProps>) {
 
     return (
         <CardContainer>
-
             {isEditing ? (
-                // Render only the form and buttons when editing
                 <>
-                    <WorkoutCardForm thisWorkout={thisWorkout} setThisWorkout={setThisWorkout}/>
-                    <Button label={"save"} onClick={handleSave}/>
-                    <Button label={"delete"} onClick={handleDelete}/>
+                    {thisWorkout ? (
+                        <>
+                            <WorkoutCardForm thisWorkout={thisWorkout} setThisWorkout={setThisWorkout} />
+                            <Button label={"save"} onClick={handleSave} />
+                            <Button label={"delete"} onClick={handleDelete} />
+                        </>
+                    ) : (
+                        <p>Loading...</p>
+                    )}
                 </>
             ) : (
                 // Render workout details and buttons when not editing
@@ -63,6 +68,8 @@ function WorkoutCardMini(props: Readonly<CardProps>) {
                     <Button label={"details"} onClick={toggleDetails}/>
                     {details && (
                         <>
+                            <p>notes:</p>
+                            <ValueContainer>{workout.notes}</ValueContainer>
                             {workout.exercises.map((exercise) => (
                                 <div key={exercise.id}>
                                     <p>{exercise.name}: </p>
