@@ -57,18 +57,26 @@ function WorkoutCard(props: Readonly<CardProps>) {
                     {workout.exercises.map((exercise) => (
                         <div key={exercise.uniqueIdentifier}>
                             <p>{exercise.name}:</p>
-                            <ValueContainerWrapper>
-                                <p>kg:</p>
-                                <ValueContainer>{exercise.kg}</ValueContainer>
-                                <p>reps:</p>
-                                {exercise.set.map((rep: number, index: number) => (
-                                    <ValueContainer key={index}>{rep}</ValueContainer>
-                                ))}
-                            </ValueContainerWrapper>
-                            <ValueContainerWrapper>
-                                <p>notes:</p>
-                                <ValueContainer>{exercise.notes}</ValueContainer>
-                            </ValueContainerWrapper>
+                            {exercise.kg !== 0 && (
+                                <ValueContainerWrapper>
+                                    <p>kg:</p>
+                                    <ValueContainer>{exercise.kg}</ValueContainer>
+                                </ValueContainerWrapper>
+                            )}
+                            {exercise.set.length > 0 && (
+                                <ValueContainerWrapper>
+                                    <p>reps:</p>
+                                    {exercise.set.map((rep: number, index: number) => (
+                                        <ValueContainer key={index}>{rep}</ValueContainer>
+                                    ))}
+                                </ValueContainerWrapper>
+                            )}
+                            {exercise.notes && exercise.notes.trim() !== "" && (
+                                <ValueContainerWrapper>
+                                    <p>notes:</p>
+                                    <ValueContainer>{exercise.notes}</ValueContainer>
+                                </ValueContainerWrapper>
+                            )}
                         </div>
                     ))}
                 </CardContainer>

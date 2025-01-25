@@ -1,7 +1,7 @@
 export interface Exercise {
     uniqueIdentifier: string;
     name: string;
-    kg: number;
-    set: number[];
+    kg?: number;
+    set?: number[];
     notes: string;
 }

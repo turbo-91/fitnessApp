@@ -68,36 +68,60 @@ function WorkoutCardForm(props: Readonly<FormCardProps>) {
             {formWorkout.exercises.map((exercise) => (
                 <div key={exercise.uniqueIdentifier}>
                     <p>{exercise.name}:</p>
-                    <ValueContainerWrapper>
-                        <p>kg:</p>
-                        <input
-                            value={exercise.kg}
-                            onChange={(e) =>
-                                handleExerciseChange(exercise.uniqueIdentifier, "kg", Number(e.target.value))
-                            }
-                        />
-                        <p>reps:</p>
-                        {exercise.set.map((rep, setIndex) => (
+                    {(exercise.kg !== 0 || exercise.set.length > 0) && (
+                        <ValueContainerWrapper>
+                            {exercise.kg !== 0 && (
+                                <>
+                                    <p>kg:</p>
+                                    <input
+                                        value={exercise.kg}
+                                        onChange={(e) =>
+                                            handleExerciseChange(
+                                                exercise.uniqueIdentifier,
+                                                "kg",
+                                                Number(e.target.value)
+                                            )
+                                        }
+                                    />
+                                </>
+                            )}
+                            {exercise.set.length > 0 && (
+                                <>
+                                    <p>reps:</p>
+                                    {exercise.set.map((rep, setIndex) => (
+                                        <input
+                                            key={setIndex}
+                                            type="number"
+                                            value={rep}
+                                            onChange={(e) =>
+                                                handleSetChange(
+                                                    exercise.uniqueIdentifier,
+                                                    setIndex,
+                                                    Number(e.target.value)
+                                                )
+                                            }
+                                        />
+                                    ))}
+                                </>
+                            )}
+                        </ValueContainerWrapper>
+                    )}
+                    {exercise.notes && exercise.notes.trim() !== "" && (
+                        <ValueContainerWrapper>
+                            <p>notes:</p>
                             <input
-                                key={setIndex}
-                                type="number"
-                                value={rep}
+                                type="text"
+                                value={exercise.notes}
                                 onChange={(e) =>
-                                    handleSetChange(exercise.uniqueIdentifier, setIndex, Number(e.target.value))
+                                    handleExerciseChange(
+                                        exercise.uniqueIdentifier,
+                                        "notes",
+                                        e.target.value
+                                    )
                                 }
                             />
-                        ))}
-                    </ValueContainerWrapper>
-                    <ValueContainerWrapper>
-                        <p>notes:</p>
-                        <input
-                            type="text"
-                            value={exercise.notes}
-                            onChange={(e) =>
-                                handleExerciseChange(exercise.uniqueIdentifier, "notes", e.target.value)
-                            }
-                        />
-                    </ValueContainerWrapper>
+                        </ValueContainerWrapper>
+                    )}
                 </div>
             ))}
         </CardContainer>
