@@ -10,15 +10,16 @@ public record Workout(
         String name,
         List<Exercise> exercises,
         Cardio cardio,
+        String notes,
         Integer timestamp
 ) {
 
-    public Workout(String name, List<Exercise> exercises, Cardio cardio, Integer timestamp) {
-        this(null, name, exercises, cardio, timestamp);
+    public Workout(String name, List<Exercise> exercises, Cardio cardio, String notes, Integer timestamp) {
+        this(null, name, exercises, cardio, notes, timestamp);
     }
 
     public Workout withId(String id) {
-        return new Workout(id, name, exercises, cardio, timestamp);
+        return new Workout(id, name, exercises, cardio, notes, timestamp);
     }
 
 }

@@ -6,5 +6,6 @@ export interface Workout {
     name: string;
     exercises: Exercise[];
     cardio?: Cardio;
+    notes: string;
     timestamp: number;
 }
