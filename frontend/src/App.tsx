@@ -27,7 +27,7 @@ function App() {
                 console.log("ids in response?", response.data)
                 const sortedNewestWorkouts = [...allWorkouts]
                     .sort((a, b) => b.timestamp - a.timestamp)
-                    .slice(0, 4);
+                    .slice(0, 10);
                 setAllWorkouts(allWorkouts);
                 setDropdownWorkouts(sortedNewestWorkouts);
             })
