@@ -10,17 +10,27 @@ export interface FormCardProps {
     setFormWorkout: (workout: Workout) => void;
     updateWorkout: (updatedWorkout: Workout) => void;
     setIsEditing: (isEditing: boolean) => void;
-    isEditing: Boolean;
+    isEditing: boolean;
 }
 
 function WorkoutCardForm(props: Readonly<FormCardProps>) {
-    const { formWorkout, setFormWorkout, updateWorkout, setIsEditing, isEditing, workout } = props;
+    const { formWorkout, setFormWorkout, updateWorkout, setIsEditing, workout } = props;
 
     useEffect(() => {
-        setFormWorkout(workout); // Sync formWorkout with workout on mount/update
-    }, [workout]);
+        console.log("workout on mount FORM", workout);
+        console.log("formworkout on mount FORM", formWorkout)
+    }, []);
+
+    useEffect(() => {
+        setFormWorkout(workout); // Initialize `formWorkout` when entering edit mode
+    }, [workout, setFormWorkout]);
 
     function handleSave() {
+        // Validate the workout before saving
+        if (!formWorkout.name || formWorkout.exercises.length === 0) {
+            console.error("Workout must have a name and at least one exercise.");
+            return;
+        }
         updateWorkout(formWorkout); // Send updated workout to API
         setIsEditing(false); // Exit edit mode
     }
@@ -53,7 +63,8 @@ function WorkoutCardForm(props: Readonly<FormCardProps>) {
     return (
         <CardContainer>
             <h2>{date} - {workout.name}</h2>
-            <Button label={"save"} onClick={handleSave} />
+            <Button label={"Save"} onClick={handleSave} />
+            <Button label={"Cancel"} onClick={() => setIsEditing(false)} />
             {formWorkout.exercises.map((exercise) => (
                 <div key={exercise.uniqueIdentifier}>
                     <p>{exercise.name}:</p>

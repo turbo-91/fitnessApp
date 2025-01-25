@@ -10,7 +10,12 @@ import History from "./features/History/History.tsx";
 
 
 function App() {
-    const [formWorkout, setFormWorkout] = useState<Workout | null>(null);
+    const [formWorkout, setFormWorkout] = useState<Workout>({
+        id: "",
+        name: "",
+        exercises: [],
+        timestamp: 0,
+    });
     const [allWorkouts, setAllWorkouts] = useState<Workout[]>([]);
     const [dropDownWorkouts, setDropdownWorkouts] = useState<Workout[]>([]);
 

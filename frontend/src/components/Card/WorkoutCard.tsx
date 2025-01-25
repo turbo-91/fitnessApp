@@ -1,44 +1,50 @@
-import {Workout} from "../../types/Workout.ts";
-import {CardContainer, ValueContainer, ValueContainerWrapper} from "./WorkoutCard.styles.ts";
-import {useEffect, useState} from "react";
+import { Workout } from "../../types/Workout.ts";
+import { CardContainer, ValueContainer, ValueContainerWrapper } from "./WorkoutCard.styles.ts";
+import { useEffect, useState } from "react";
 import Button from "../Button/Button.tsx";
 import WorkoutCardForm from "../Form/WorkoutCardForm.tsx";
 
 export interface CardProps {
     workout: Workout;
     formWorkout: Workout;
-    setFormWorkout: (workout: Workout) => void,
-    toggleDetails: () => void,
+    setFormWorkout: (workout: Workout) => void;
+    toggleDetails: () => void;
     deleteWorkout: (deletedWorkout: Workout) => void;
     updateWorkout: (updatedWorkout: Workout) => void;
 }
 
 function WorkoutCard(props: Readonly<CardProps>) {
     const { workout, formWorkout, setFormWorkout, toggleDetails, deleteWorkout, updateWorkout } = props;
-    const [isEditing, setIsEditing] = useState<boolean>(false)
+    const [isEditing, setIsEditing] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log("workout in WorkoutCard", workout)
-        console.log("formWorkout in WorkoutCard", formWorkout)
+        console.log("workout on mount CARD", workout);
+        console.log("formworkout on mount CARD", formWorkout)
     }, []);
 
 
+    useEffect(() => {
+        if (isEditing) {
+            setFormWorkout(workout); // Sync `formWorkout` with `workout` when entering edit mode
+        }
+    }, [isEditing, workout, setFormWorkout]);
+
     function handleEdit() {
-        setIsEditing(true)
-        console.log("isEditing in handleEdit", isEditing)
+        console.log("Entering edit mode with workout:", workout);
+        console.log("Current formWorkout:", formWorkout);
+        setIsEditing(true);
     }
 
-    function handleDelete () {
+    function handleDelete() {
         if (workout) {
             deleteWorkout(workout);
-            setIsEditing(false);
+            setIsEditing(false); // Ensure edit mode is exited
         } else {
             console.error("No workout to delete!");
         }
-    };
+    }
 
     const date: string = new Date(workout.timestamp * 1000).toDateString();
-
 
     return (
         <>
@@ -47,10 +53,10 @@ function WorkoutCard(props: Readonly<CardProps>) {
                     <h2>{date} - {workout.name}</h2>
                     <Button label={"Close"} onClick={toggleDetails} />
                     <Button label={"Edit"} onClick={handleEdit} />
-                    <Button label={"Delete"} onClick={() => handleDelete()} />
+                    <Button label={"Delete"} onClick={handleDelete} />
                     {workout.exercises.map((exercise) => (
                         <div key={exercise.uniqueIdentifier}>
-                            <p>{exercise.name}: </p>
+                            <p>{exercise.name}:</p>
                             <ValueContainerWrapper>
                                 <p>kg:</p>
                                 <ValueContainer>{exercise.kg}</ValueContainer>
@@ -77,6 +83,7 @@ function WorkoutCard(props: Readonly<CardProps>) {
                 />
             )}
         </>
-    );}
+    );
+}
 
 export default WorkoutCard;
