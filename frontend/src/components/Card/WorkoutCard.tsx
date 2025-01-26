@@ -11,10 +11,12 @@ export interface CardProps {
     toggleDetails: () => void;
     deleteWorkout: (deletedWorkout: Workout) => void;
     updateWorkout: (updatedWorkout: Workout) => void;
+    setIsEditing: (isEditing: boolean) => void;
+    isEditing: boolean;
 }
 
 function WorkoutCard(props: Readonly<CardProps>) {
-    const { workout, formWorkout, setFormWorkout, toggleDetails, deleteWorkout, updateWorkout } = props;
+    const { workout, formWorkout, setFormWorkout, toggleDetails, deleteWorkout, updateWorkout, setIsEditing, isEditing } = props;
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
     useEffect(() => {

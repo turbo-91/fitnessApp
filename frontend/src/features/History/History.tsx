@@ -3,7 +3,7 @@ import WorkoutCardMini from "../../components/CardMini/WorkoutCardMini.tsx";
 
 
 type HistoryProps = {
-    formWorkout: Workout | null;
+    formWorkout: Workout;
     setFormWorkout: (workout: Workout) => void,
     allWorkouts: Workout[];
     deleteWorkout: (deletedWorkout: Workout) => void;
