@@ -11,10 +11,12 @@ export interface FormCardProps {
     updateWorkout: (updatedWorkout: Workout) => void;
     setIsEditing: (isEditing: boolean) => void;
     isEditing: boolean;
+    todaysWorkout: Workout;
+    setTodaysWorkout: (workout: Workout) => void;
 }
 
 function WorkoutCardForm(props: Readonly<FormCardProps>) {
-    const { formWorkout, setFormWorkout, updateWorkout, setIsEditing, workout } = props;
+    const { formWorkout, setFormWorkout, updateWorkout, setIsEditing, workout, todaysWorkout, setTodaysWorkout } = props;
 
     useEffect(() => {
         console.log("workout on mount FORM", workout);

@@ -5,22 +5,26 @@ import {useState} from "react";
 import WorkoutCard from "../Card/WorkoutCard.tsx";
 
 export interface CardMiniProps {
-    miniWorkout: Workout;
+    workout: Workout;
+    todaysWorkout: Workout;
+    setTodaysWorkout: (workout: Workout) => void;
     formWorkout: Workout;
     setFormWorkout: (workout: Workout) => void,
     deleteWorkout: (deletedWorkout: Workout) => void;
     updateWorkout: (updatedWorkout: Workout) => void;
+    setIsEditing: (isEditing: boolean) => void;
+    isEditing: boolean;
+    toggleDetails: () => void;
+    details: boolean;
+    setDetails: (details: boolean) => void;
 }
 
 function WorkoutCardMini(props: Readonly<CardMiniProps>) {
-    const {miniWorkout, formWorkout, setFormWorkout, deleteWorkout, updateWorkout } = props;
-    const [details, setDetails] = useState<boolean>(false)
+    const {workout, formWorkout, setFormWorkout, deleteWorkout, updateWorkout, isEditing, setIsEditing,
+        todaysWorkout, setTodaysWorkout, details, setDetails, toggleDetails } = props;
 
-    const date: string = new Date(miniWorkout.timestamp * 1000).toDateString();
+    const date: string = new Date(workout.timestamp * 1000).toDateString();
 
-    function toggleDetails() {
-        setDetails((prevState: boolean) => !prevState);
-    }
 
 
 
@@ -47,17 +51,21 @@ function WorkoutCardMini(props: Readonly<CardMiniProps>) {
             {!details ? (
                 <CardContainer>
                     <h2>{date}</h2>
-                    <h2>{miniWorkout.name}</h2>
+                    <h2>{workout.name}</h2>
                     <Button label={"Details"} onClick={toggleDetails}/>
                 </CardContainer>
             ) : (
                 <> <WorkoutCard
-                    workout={miniWorkout}
+                    workout={workout}
                     formWorkout={formWorkout}
                     setFormWorkout={setFormWorkout}
                     toggleDetails={toggleDetails}
                     deleteWorkout={deleteWorkout}
                     updateWorkout={updateWorkout}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
+                    todaysWorkout={todaysWorkout} setTodaysWorkout={setTodaysWorkout}
+                    details={details} setDetails={setDetails}
                 />
                 </>
             )}

@@ -7,6 +7,7 @@ import Header from "./components/Header/Header.tsx";
 import Footer from "./components/Footer/Footer.tsx";
 import {AppContainer} from "./App.styles.ts";
 import History from "./features/History/History.tsx";
+import LetsWorkout from "./features/LetsWorkout/LetsWorkout.tsx";
 
 
 function App() {
@@ -18,16 +19,22 @@ function App() {
     });
     const [allWorkouts, setAllWorkouts] = useState<Workout[]>([]);
     const [dropDownWorkouts, setDropdownWorkouts] = useState<Workout[]>([]);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [todaysWorkout, setTodaysWorkout] = useState<Workout>(allWorkouts[0])
+    const [details, setDetails] = useState<boolean>(false)
+
+    function toggleDetails() {
+        setDetails((prevState: boolean) => !prevState);
+    };
 
     const fetchWorkouts = () => {
         axios
             .get<Workout[]>("http://localhost:8080/api/workouts") // Ensure the response matches the type
             .then((response) => {
-                const allWorkouts = response.data;
+                const allWorkouts = response.data.sort((a, b) => b.timestamp - a.timestamp);
                 console.log("ids in response?", response.data)
                 const sortedNewestWorkouts = [...allWorkouts]
-                    .sort((a, b) => b.timestamp - a.timestamp)
-                    .slice(0, 4);
+                    .slice(0, 10);
                 setAllWorkouts(allWorkouts);
                 setDropdownWorkouts(sortedNewestWorkouts);
             })
@@ -40,6 +47,18 @@ function App() {
         fetchWorkouts();
         console.log("allWorkouts after fetch", allWorkouts)
     }, []);
+
+    const addWorkout = (workout: Workout) => {
+        axios
+            .post<Workout>("http://localhost:8080/api/workouts", workout)
+            .then((response) => {
+                setAllWorkouts((prevWorkouts) => [...prevWorkouts, response.data]); // Append the new workout to the workouts state
+                console.log("response in App", response.data)
+            })
+            .catch((error) => {
+                console.error("Error adding new workout:", error);
+            });
+    };
 
     const updateWorkout = (workout: Workout) => {
         console.log("workout before update", workout);
@@ -82,13 +101,21 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
+                        element={<LetsWorkout formWorkout={formWorkout} setFormWorkout={setFormWorkout} dropdownWorkouts={dropDownWorkouts}
+                                              updateWorkout={updateWorkout} deleteWorkout={deleteWorkout} isEditing={isEditing}
+                                              setIsEditing={setIsEditing} todaysWorkout={todaysWorkout}
+                                              setTodaysWorkout={setTodaysWorkout} details={details} setDetails={setDetails}
+                                              toggleDetails={toggleDetails} addWorkout={addWorkout} />}
 
                     />
                     <Route
                         path="/history"
                         element={
                             <History formWorkout={formWorkout} setFormWorkout={setFormWorkout} allWorkouts={allWorkouts}
-                                     updateWorkout={updateWorkout} deleteWorkout={deleteWorkout}
+                                     updateWorkout={updateWorkout} deleteWorkout={deleteWorkout} isEditing={isEditing}
+                                     setIsEditing={setIsEditing} todaysWorkout={todaysWorkout}
+                                     setTodaysWorkout={setTodaysWorkout} details={details} setDetails={setDetails}
+                                     toggleDetails={toggleDetails}
                             />
                         }
                     />
