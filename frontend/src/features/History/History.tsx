@@ -8,10 +8,12 @@ type HistoryProps = {
     allWorkouts: Workout[];
     deleteWorkout: (deletedWorkout: Workout) => void;
     updateWorkout: (updatedWorkout: Workout) => void;
+    setIsEditing: (isEditing: boolean) => void;
+    isEditing: boolean;
 };
 
 function History(props: HistoryProps) {
-    const {allWorkouts, formWorkout, setFormWorkout, deleteWorkout, updateWorkout} = props;
+    const {allWorkouts, formWorkout, setFormWorkout, deleteWorkout, updateWorkout, isEditing, setIsEditing} = props;
 
     return (
         <>
@@ -23,6 +25,8 @@ function History(props: HistoryProps) {
                     setFormWorkout={setFormWorkout}
                     updateWorkout={updateWorkout}
                     deleteWorkout={deleteWorkout}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
                 />
             ))}
         </>

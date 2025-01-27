@@ -10,10 +10,12 @@ export interface CardMiniProps {
     setFormWorkout: (workout: Workout) => void,
     deleteWorkout: (deletedWorkout: Workout) => void;
     updateWorkout: (updatedWorkout: Workout) => void;
+    setIsEditing: (isEditing: boolean) => void;
+    isEditing: boolean;
 }
 
 function WorkoutCardMini(props: Readonly<CardMiniProps>) {
-    const {miniWorkout, formWorkout, setFormWorkout, deleteWorkout, updateWorkout } = props;
+    const {miniWorkout, formWorkout, setFormWorkout, deleteWorkout, updateWorkout, isEditing, setIsEditing } = props;
     const [details, setDetails] = useState<boolean>(false)
 
     const date: string = new Date(miniWorkout.timestamp * 1000).toDateString();
@@ -58,6 +60,8 @@ function WorkoutCardMini(props: Readonly<CardMiniProps>) {
                     toggleDetails={toggleDetails}
                     deleteWorkout={deleteWorkout}
                     updateWorkout={updateWorkout}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
                 />
                 </>
             )}

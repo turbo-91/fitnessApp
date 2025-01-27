@@ -17,7 +17,6 @@ export interface CardProps {
 
 function WorkoutCard(props: Readonly<CardProps>) {
     const { workout, formWorkout, setFormWorkout, toggleDetails, deleteWorkout, updateWorkout, setIsEditing, isEditing } = props;
-    const [isEditing, setIsEditing] = useState<boolean>(false);
 
     useEffect(() => {
         console.log("workout on mount CARD", workout);

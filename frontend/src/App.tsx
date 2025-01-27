@@ -18,16 +18,16 @@ function App() {
     });
     const [allWorkouts, setAllWorkouts] = useState<Workout[]>([]);
     const [dropDownWorkouts, setDropdownWorkouts] = useState<Workout[]>([]);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
 
     const fetchWorkouts = () => {
         axios
             .get<Workout[]>("http://localhost:8080/api/workouts") // Ensure the response matches the type
             .then((response) => {
-                const allWorkouts = response.data;
+                const allWorkouts = response.data.sort((a, b) => b.timestamp - a.timestamp);
                 console.log("ids in response?", response.data)
                 const sortedNewestWorkouts = [...allWorkouts]
-                    .sort((a, b) => b.timestamp - a.timestamp)
-                    .slice(0, 4);
+                    .slice(0, 10);
                 setAllWorkouts(allWorkouts);
                 setDropdownWorkouts(sortedNewestWorkouts);
             })
@@ -88,7 +88,8 @@ function App() {
                         path="/history"
                         element={
                             <History formWorkout={formWorkout} setFormWorkout={setFormWorkout} allWorkouts={allWorkouts}
-                                     updateWorkout={updateWorkout} deleteWorkout={deleteWorkout}
+                                     updateWorkout={updateWorkout} deleteWorkout={deleteWorkout} isEditing={isEditing}
+                                     setIsEditing={setIsEditing}
                             />
                         }
                     />
