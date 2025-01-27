@@ -1,13 +1,17 @@
 import { Workout } from "../../types/Workout.ts";
 import { CardContainer, ValueContainer, ValueContainerWrapper } from "./WorkoutCard.styles.ts";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Button from "../Button/Button.tsx";
 import WorkoutCardForm from "../Form/WorkoutCardForm.tsx";
 
 export interface CardProps {
     workout: Workout;
+    todaysWorkout: Workout;
+    setTodaysWorkout: (workout: Workout) => void;
     formWorkout: Workout;
     setFormWorkout: (workout: Workout) => void;
+    details: boolean;
+    setDetails: (details: boolean) => void;
     toggleDetails: () => void;
     deleteWorkout: (deletedWorkout: Workout) => void;
     updateWorkout: (updatedWorkout: Workout) => void;
@@ -16,7 +20,8 @@ export interface CardProps {
 }
 
 function WorkoutCard(props: Readonly<CardProps>) {
-    const { workout, formWorkout, setFormWorkout, toggleDetails, deleteWorkout, updateWorkout, setIsEditing, isEditing } = props;
+    const { workout, formWorkout, setFormWorkout, toggleDetails, deleteWorkout, updateWorkout, setIsEditing, isEditing,
+        todaysWorkout, setTodaysWorkout } = props;
 
     useEffect(() => {
         console.log("workout on mount CARD", workout);
@@ -89,6 +94,7 @@ function WorkoutCard(props: Readonly<CardProps>) {
                     updateWorkout={updateWorkout}
                     isEditing={isEditing}
                     setIsEditing={setIsEditing}
+                    todaysWorkout={todaysWorkout} setTodaysWorkout={setTodaysWorkout}
                 />
             )}
         </>
